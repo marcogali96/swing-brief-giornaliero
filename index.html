@@ -12,6 +12,10 @@
 body{ margin:0; background: radial-gradient(1200px 600px at 80% -10%, rgba(47,214,160,.06), transparent 60%), var(--ink);
   color:var(--tx); min-height:100vh; padding:26px 20px 40px; font-family:'Space Grotesk',-apple-system,'Segoe UI',Roboto,sans-serif; -webkit-font-smoothing:antialiased; }
 .mono{ font-family:'IBM Plex Mono',ui-monospace,monospace; }
+.freshbar{ max-width:1080px; margin:0 auto 14px; padding:9px 14px; border-radius:10px; font-size:12.5px; letter-spacing:.02em; display:flex; align-items:center; gap:8px; }
+.freshbar.fresh, .freshbar.ok{ background:rgba(47,214,160,.08); border:1px solid rgba(47,214,160,.28); color:#7fe9c4; }
+.freshbar.stale{ background:rgba(255,107,107,.12); border:1px solid rgba(255,107,107,.5); color:#ffb3b3; font-weight:600; animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(255,107,107,0);} 50%{ box-shadow:0 0 0 4px rgba(255,107,107,.14);} }
 .top{ max-width:1080px; margin:0 auto 18px; display:flex; align-items:flex-start; justify-content:space-between; gap:16px; }
 .title{ font-size:26px; font-weight:700; letter-spacing:.14em; }
 .sub{ color:var(--mut); font-size:13px; margin-top:3px; letter-spacing:.02em; }
@@ -101,7 +105,7 @@ body{ margin:0; background: radial-gradient(1200px 600px at 80% -10%, rgba(47,21
 <script>
 /* ————— dati di riserva: la dashboard funziona anche se brief.json manca ————— */
 const FALLBACK = {
-  date: "27 agosto 2026", dataDate: "dati al 26/08",
+  date: "27 agosto 2026", dataDate: "dati al 26/08", generatedAt: "2026-08-27T07:05:00Z",
   regime: { level: "verde", label: "Verde attenuato",
     detail: "Breadth risk-on: large cap USA in maggioranza sopra le medie, nessun liquido su nuovi minimi a 200gg. Pullback in alcuni leader → cautela. Per gli short il regime resta sfavorevole." },
   items: [
@@ -222,11 +226,25 @@ function openChart(it){
 }
 
 /* ————— render ————— */
+function freshness(iso){
+  const now=new Date();
+  if(!iso) return { level:"stale", icon:"\u26A0", text:"Aggiornamento sconosciuto — verifica l'automazione." };
+  const gen=new Date(iso);
+  const mrb=new Date(now); const wd=mrb.getDay();
+  if(wd===0) mrb.setDate(mrb.getDate()-2); else if(wd===6) mrb.setDate(mrb.getDate()-1);
+  mrb.setHours(0,0,0,0);
+  const hh=gen.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});
+  const dm=gen.toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit"});
+  if(gen.toDateString()===now.toDateString()) return { level:"fresh", icon:"\u25CF", text:"Aggiornato oggi alle "+hh };
+  if(gen>=mrb) return { level:"ok", icon:"\u25CF", text:"Ultima seduta: "+dm+" "+hh };
+  return { level:"stale", icon:"\u26A0", text:"DATI NON AGGIORNATI — ultimo: "+dm+" "+hh+". Non operare finch\u00e9 non si aggiorna." };
+}
 const STATE={ filter:"TUTTI", data:FALLBACK };
 const app=document.getElementById("app");
 
 function build(){
   const d=STATE.data, r=REGIME[d.regime.level];
+  const fr=freshness(d.generatedAt);
   const c={ long:d.items.filter(x=>x.dir==="LONG").length, short:d.items.filter(x=>x.dir==="SHORT").length, watch:d.items.filter(x=>x.dir==="WATCH").length };
   const tabs=["TUTTI","LONG","SHORT","WATCH"];
   app.innerHTML=`
@@ -236,6 +254,7 @@ function build(){
         ${["verde","giallo","rosso"].map(lv=>`<span class="lamp ${d.regime.level===lv?"on":""}" style="--c:${REGIME[lv].color}"></span>`).join('')}
       </div>
     </header>
+    <div class="freshbar ${fr.level}">${fr.icon} ${fr.text}</div>
     <section class="regime" style="--rc:${r.color}">
       <div class="regime-head"><span class="regime-dot"></span><span class="regime-label">Regime macro — ${d.regime.label}</span></div>
       <p class="regime-detail">${d.regime.detail}</p>
