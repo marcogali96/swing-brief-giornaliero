@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Brief Swing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+:root{ --ink:#0E141B; --surf:#161E27; --surf2:#1B2530; --bd:#26303C; --tx:#E7EEF5; --mut:#8494A5; --mut2:#5E6C7B; }
+*{ box-sizing:border-box; }
+body{ margin:0; background: radial-gradient(1200px 600px at 80% -10%, rgba(47,214,160,.06), transparent 60%), var(--ink);
+  color:var(--tx); min-height:100vh; padding:26px 20px 40px; font-family:'Space Grotesk',-apple-system,'Segoe UI',Roboto,sans-serif; -webkit-font-smoothing:antialiased; }
+.mono{ font-family:'IBM Plex Mono',ui-monospace,monospace; }
+.freshbar{ max-width:1080px; margin:0 auto 14px; padding:9px 14px; border-radius:10px; font-size:12.5px; letter-spacing:.02em; display:flex; align-items:center; gap:8px; }
+.freshbar.fresh, .freshbar.ok{ background:rgba(47,214,160,.08); border:1px solid rgba(47,214,160,.28); color:#7fe9c4; }
+.freshbar.stale{ background:rgba(255,107,107,.12); border:1px solid rgba(255,107,107,.5); color:#ffb3b3; font-weight:600; animation:pulse 2s ease-in-out infinite; }
+@keyframes pulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(255,107,107,0);} 50%{ box-shadow:0 0 0 4px rgba(255,107,107,.14);} }
+.top{ max-width:1080px; margin:0 auto 18px; display:flex; align-items:flex-start; justify-content:space-between; gap:16px; }
+.title{ font-size:26px; font-weight:700; letter-spacing:.14em; }
+.sub{ color:var(--mut); font-size:13px; margin-top:3px; letter-spacing:.02em; }
+.lamps{ display:flex; gap:9px; padding:9px 12px; background:var(--surf); border:1px solid var(--bd); border-radius:999px; }
+.lamp{ width:12px; height:12px; border-radius:50%; background:var(--c); opacity:.16; transition:opacity .3s, box-shadow .3s; }
+.lamp.on{ opacity:1; box-shadow:0 0 0 3px color-mix(in srgb, var(--c) 22%, transparent), 0 0 14px 1px var(--c); }
+.regime{ max-width:1080px; margin:0 auto 20px; background:linear-gradient(180deg, color-mix(in srgb, var(--rc) 9%, var(--surf)), var(--surf));
+  border:1px solid var(--bd); border-left:3px solid var(--rc); border-radius:14px; padding:15px 18px; }
+.regime-head{ display:flex; align-items:center; gap:9px; }
+.regime-dot{ width:9px; height:9px; border-radius:50%; background:var(--rc); box-shadow:0 0 10px var(--rc); }
+.regime-label{ font-weight:600; letter-spacing:.04em; font-size:14px; }
+.regime-detail{ margin:8px 0 0; color:var(--mut); font-size:13.5px; line-height:1.5; max-width:80ch; }
+.stats{ max-width:1080px; margin:0 auto 16px; display:flex; align-items:center; gap:22px; flex-wrap:wrap; }
+.stat{ display:flex; align-items:baseline; gap:7px; }
+.stat b{ font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; }
+.stat span{ color:var(--mut); font-size:12px; letter-spacing:.06em; text-transform:uppercase; }
+.tabs{ margin-left:auto; display:flex; gap:6px; background:var(--surf); border:1px solid var(--bd); border-radius:10px; padding:4px; }
+.tab{ border:0; background:transparent; color:var(--mut); font-family:inherit; font-size:12px; font-weight:600; letter-spacing:.06em; padding:7px 13px; border-radius:7px; cursor:pointer; transition:.18s; }
+.tab:hover{ color:var(--tx); }
+.tab.act{ background:var(--surf2); color:var(--tx); box-shadow:inset 0 0 0 1px var(--bd); }
+.grid{ max-width:1080px; margin:0 auto; display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+.card{ position:relative; overflow:hidden; background:var(--surf); border:1px solid var(--bd); border-radius:16px; padding:18px 18px 16px; animation:rise .5s cubic-bezier(.2,.7,.2,1) both; }
+.card-edge{ position:absolute; left:0; top:0; bottom:0; width:3px; }
+@keyframes rise{ from{ opacity:0; transform:translateY(10px);} to{ opacity:1; transform:none;} }
+.card-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:10px; }
+.tk{ font-family:'IBM Plex Mono',monospace; font-size:19px; font-weight:600; letter-spacing:.02em; }
+.nm{ font-size:13px; color:var(--tx); margin-top:1px; }
+.meta{ font-size:11.5px; color:var(--mut2); margin-top:2px; letter-spacing:.02em; }
+.chip{ display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; letter-spacing:.08em; padding:5px 9px; border-radius:7px; white-space:nowrap; }
+.card-mid{ display:flex; align-items:center; gap:6px; margin:6px 0 12px; }
+.gauge{ width:132px; flex:none; }
+.gauge-track{ fill:none; stroke:#232E3A; stroke-width:10; stroke-linecap:round; }
+.gauge-val{ fill:none; stroke-width:10; stroke-linecap:round; }
+.gauge-thr{ stroke:#4A5867; stroke-opacity:.5; stroke-width:2; }
+.gauge-num{ font-family:'IBM Plex Mono',monospace; font-size:30px; font-weight:600; text-anchor:middle; }
+.gauge-den{ font-family:'IBM Plex Mono',monospace; font-size:11px; fill:var(--mut2); text-anchor:middle; }
+.bars{ flex:1; display:flex; flex-direction:column; gap:7px; min-width:0; }
+.bar-row{ display:flex; align-items:center; gap:8px; }
+.bar-lbl{ font-size:10.5px; color:var(--mut); width:52px; letter-spacing:.03em; }
+.bar-track{ flex:1; height:5px; background:#232E3A; border-radius:99px; overflow:hidden; }
+.bar-fill{ display:block; height:100%; border-radius:99px; opacity:.85; }
+.bar-val{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--mut); width:22px; text-align:right; }
+.price-row{ display:flex; justify-content:space-between; align-items:baseline; padding:9px 0; border-top:1px solid var(--bd); }
+.px-lbl{ font-size:11px; color:var(--mut); letter-spacing:.06em; text-transform:uppercase; }
+.px-val{ font-family:'IBM Plex Mono',monospace; font-size:16px; font-weight:600; }
+.levels{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px; }
+.lv{ display:flex; align-items:center; gap:6px; background:var(--surf2); border:1px solid var(--bd); border-radius:9px; padding:8px 10px; color:var(--mut); }
+.lv svg{ color:var(--mut2); flex:none; }
+.lv-l{ font-size:10.5px; letter-spacing:.04em; text-transform:uppercase; }
+.lv-v{ font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--tx); margin-left:auto; font-weight:500; }
+.lv.rr .lv-v{ color:#6FB2FF; }
+.watch-note{ background:var(--surf2); border:1px dashed var(--bd); border-radius:9px; padding:10px 12px; color:var(--mut); font-size:12.5px; text-align:center; }
+.flags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:11px; }
+.flag{ display:inline-flex; align-items:center; gap:4px; font-size:10.5px; color:#F0B84B; background:rgba(240,184,75,.1); border:1px solid rgba(240,184,75,.25); border-radius:6px; padding:3px 7px; letter-spacing:.02em; }
+.note{ margin:11px 0 0; font-size:12.5px; line-height:1.5; color:var(--mut); }
+.actions{ display:flex; align-items:center; gap:10px; margin-top:13px; }
+.btn-chart{ display:inline-flex; align-items:center; gap:7px; font-family:inherit; font-size:12.5px; font-weight:600; letter-spacing:.03em; color:var(--tx);
+  background:color-mix(in srgb, var(--c) 12%, var(--surf2)); border:1px solid color-mix(in srgb, var(--c) 35%, var(--bd)); border-radius:9px; padding:9px 14px; cursor:pointer; transition:.18s; }
+.btn-chart:hover{ background:color-mix(in srgb, var(--c) 20%, var(--surf2)); transform:translateY(-1px); }
+.btn-chart svg{ color:var(--c); }
+.tv-link{ margin-left:auto; display:inline-flex; align-items:center; gap:4px; font-size:11.5px; color:var(--mut); text-decoration:none; letter-spacing:.02em; }
+.tv-link:hover{ color:var(--tx); }
+.foot{ max-width:1080px; margin:26px auto 0; padding-top:16px; border-top:1px solid var(--bd); font-size:11.5px; color:var(--mut2); text-align:center; letter-spacing:.02em; }
+.drawer{ position:fixed; inset:0; background:rgba(6,10,14,.72); backdrop-filter:blur(3px); display:flex; align-items:center; justify-content:center; padding:20px; z-index:50; }
+.drawer-panel{ width:min(940px,100%); background:var(--surf); border:1px solid var(--bd); border-radius:18px; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,.5); }
+.drawer-head{ display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--bd); }
+.dh-left{ display:flex; align-items:center; gap:10px; }
+.dh-tk{ font-family:'IBM Plex Mono',monospace; font-size:17px; font-weight:600; }
+.dh-nm{ color:var(--mut); font-size:13px; }
+.dh-close{ background:var(--surf2); border:1px solid var(--bd); color:var(--mut); border-radius:8px; width:32px; height:32px; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.dh-close:hover{ color:var(--tx); }
+.dh-levels{ display:flex; flex-wrap:wrap; gap:16px; padding:11px 16px; border-bottom:1px solid var(--bd); font-size:12px; color:var(--mut); }
+.dh-levels span{ display:inline-flex; align-items:center; gap:6px; }
+.dh-levels i{ width:8px; height:8px; border-radius:50%; }
+.dh-levels b{ font-family:'IBM Plex Mono',monospace; color:var(--tx); font-weight:600; }
+.tvbox{ height:460px; background:#0E141B; position:relative; }
+.tv-fallback{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; color:var(--mut); font-size:13px; padding:20px; text-align:center; }
+.tv-fallback a{ display:inline-flex; align-items:center; gap:6px; color:#6FB2FF; text-decoration:none; font-weight:600; }
+.tv-hint{ margin:0; padding:11px 16px; font-size:11px; color:var(--mut2); border-top:1px solid var(--bd); letter-spacing:.02em; }
+@media (max-width:560px){ .title{ font-size:22px; } .tabs{ margin-left:0; width:100%; } .tvbox{ height:360px; } }
+@media (prefers-reduced-motion:reduce){ .card{ animation:none; } }
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ————— dati di riserva: la dashboard funziona anche se brief.json manca ————— */
+const FALLBACK = {
+  date: "27 agosto 2026", dataDate: "dati al 26/08", generatedAt: "2026-08-27T07:05:00Z",
+  regime: { level: "verde", label: "Verde attenuato",
+    detail: "Breadth risk-on: large cap USA in maggioranza sopra le medie, nessun liquido su nuovi minimi a 200gg. Pullback in alcuni leader → cautela. Per gli short il regime resta sfavorevole." },
+  items: [
+    { ticker:"MSFT", tvSymbol:"NASDAQ:MSFT", name:"Microsoft", sector:"Software", country:"USA", dir:"LONG", score:8.0, breakdown:{T:8.5,F:8.0,M:7.0,RS:8.0}, price:"$496", entry:"486 – 492", stop:"470", target:"540", rr:"1 : 2,5", flags:[], note:"Uptrend pulito sopra le medie, utili +31,7% a/a, momentum in accelerazione." },
+    { ticker:"LLY", tvSymbol:"NYSE:LLY", name:"Eli Lilly", sector:"Pharma", country:"USA", dir:"LONG", score:7.0, breakdown:{T:6.5,F:8.5,M:6.5,RS:5.5}, price:"$1.189", entry:"1.180 – 1.190", stop:"1.120", target:"1.290", rr:"1 : 1,6", flags:["Attendere tenuta MA50"], note:"Pullback su supporto in trend sano, ricavi +47,7% a/a. Entrare solo se la MA50 regge." },
+    { ticker:"WMT", tvSymbol:"NYSE:WMT", name:"Walmart", sector:"Retail", country:"USA", dir:"SHORT", score:7.5, breakdown:{T:8.0,F:7.5,M:6.0,RS:8.5}, price:"$104", entry:"108 – 110", stop:"114", target:"96", rr:"1 : 2,0", flags:["Post-utili"], note:"Rottura sotto tutte le medie, crescita lenta e P/E tirato. Beta basso: si muove piano." },
+    { ticker:"META", tvSymbol:"NASDAQ:META", name:"Meta Platforms", sector:"Comm. Services", country:"USA", dir:"WATCH", score:5.0, breakdown:{T:3.5,F:6.0,M:6.0,RS:5.0}, price:"$576", entry:"—", stop:"—", target:"—", rr:"—", flags:["Sotto MA200"], note:"Rimbalzo del +5,5% ma ancora sotto MA50 e MA200. Diventa long solo oltre i $623." }
+  ]
+};
+
+const DIR = {
+  LONG:  { color:"#2FD6A0", soft:"rgba(47,214,160,.14)", label:"LONG", icon:"up" },
+  SHORT: { color:"#FF6B6B", soft:"rgba(255,107,107,.14)", label:"SHORT", icon:"down" },
+  WATCH: { color:"#F0B84B", soft:"rgba(240,184,75,.14)", label:"OSSERVA", icon:"eye" },
+};
+const REGIME = { verde:{color:"#2FD6A0"}, giallo:{color:"#F0B84B"}, rosso:{color:"#FF6B6B"} };
+
+const PATHS = {
+  up:'<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
+  down:'<polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/>',
+  eye:'<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+  target:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  shield:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+  crosshair:'<circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/>',
+  flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>',
+  chart:'<path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/>',
+  ext:'<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>',
+  x:'<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>',
+};
+function ic(name, size){ size = size||14; return `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${PATHS[name]}</svg>`; }
+
+function gaugeHTML(score, color){
+  const cx=90, cy=84, r=70;
+  const frac=Math.max(0,Math.min(1,score/10));
+  const end=180-frac*180, thr=180-0.7*180;
+  const P=(a,rr)=>{ const rad=a*Math.PI/180; return [cx+rr*Math.cos(rad), cy-rr*Math.sin(rad)]; };
+  const arc=(a0,a1)=>{ const s=P(a0,r), e=P(a1,r); const la=Math.abs(a1-a0)>180?1:0; return `M ${s[0].toFixed(1)} ${s[1].toFixed(1)} A ${r} ${r} 0 ${la} 1 ${e[0].toFixed(1)} ${e[1].toFixed(1)}`; };
+  const t1=P(thr,r+8), t2=P(thr,r-8);
+  return `<svg viewBox="0 0 180 100" class="gauge">
+    <path d="${arc(180,0)}" class="gauge-track"/>
+    <path d="${arc(180,end)}" class="gauge-val" style="stroke:${color}"/>
+    <line x1="${t1[0].toFixed(1)}" y1="${t1[1].toFixed(1)}" x2="${t2[0].toFixed(1)}" y2="${t2[1].toFixed(1)}" class="gauge-thr"/>
+    <text x="${cx}" y="${cy-6}" class="gauge-num" style="fill:${color}">${score.toFixed(1)}</text>
+    <text x="${cx}" y="${cy+12}" class="gauge-den">/ 10</text>
+  </svg>`;
+}
+function barsHTML(bd, color){
+  const rows=[["T","Tecnica"],["F","Fondam."],["M","Macro"],["RS","For.rel."]];
+  return `<div class="bars">${rows.map(([k,l])=>`
+    <div class="bar-row"><span class="bar-lbl">${l}</span>
+      <span class="bar-track"><span class="bar-fill" style="width:${bd[k]*10}%;background:${color}"></span></span>
+      <span class="bar-val">${bd[k].toFixed(1)}</span></div>`).join('')}</div>`;
+}
+function levelsHTML(it){
+  return `<div class="levels">
+    <div class="lv">${ic("crosshair",13)}<span class="lv-l">Ingresso</span><span class="lv-v">${it.entry}</span></div>
+    <div class="lv">${ic("shield",13)}<span class="lv-l">Stop</span><span class="lv-v">${it.stop}</span></div>
+    <div class="lv">${ic("target",13)}<span class="lv-l">Obiettivo</span><span class="lv-v">${it.target}</span></div>
+    <div class="lv rr"><span class="lv-l">R / R</span><span class="lv-v">${it.rr}</span></div>
+  </div>`;
+}
+function cardHTML(it, i){
+  const d=DIR[it.dir];
+  return `<article class="card" style="animation-delay:${i*70}ms">
+    <span class="card-edge" style="background:${d.color}"></span>
+    <header class="card-head">
+      <div><div class="tk">${it.ticker}</div><div class="nm">${it.name}</div><div class="meta">${it.sector} · ${it.country}</div></div>
+      <span class="chip" style="color:${d.color};background:${d.soft}">${ic(d.icon,13)} ${d.label}</span>
+    </header>
+    <div class="card-mid">${gaugeHTML(it.score,d.color)}${barsHTML(it.breakdown,d.color)}</div>
+    <div class="price-row"><span class="px-lbl">Prezzo</span><span class="px-val">${it.price}</span></div>
+    ${it.dir==="WATCH" ? `<div class="watch-note">In attesa di conferma — non ancora attivabile.</div>` : levelsHTML(it)}
+    ${it.flags.length ? `<div class="flags">${it.flags.map(f=>`<span class="flag">${ic("flag",11)} ${f}</span>`).join('')}</div>` : ''}
+    <p class="note">${it.note}</p>
+    <div class="actions">
+      <button class="btn-chart" data-chart="${it.ticker}" style="--c:${d.color}">${ic("chart",14)} Grafico</button>
+      <a class="tv-link" href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(it.tvSymbol)}" target="_blank" rel="noreferrer">TradingView ${ic("ext",12)}</a>
+    </div>
+  </article>`;
+}
+
+/* ————— grafico TradingView (embed ufficiale gratuito) ————— */
+let tvP=null;
+function loadTV(){ if(window.TradingView) return Promise.resolve(); if(tvP) return tvP;
+  tvP=new Promise((res,rej)=>{ const s=document.createElement("script"); s.src="https://s3.tradingview.com/tv.js"; s.async=true; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); return tvP; }
+
+function openChart(it){
+  const d=DIR[it.dir];
+  const link=`https://www.tradingview.com/chart/?symbol=${encodeURIComponent(it.tvSymbol)}`;
+  const wrap=document.createElement("div"); wrap.className="drawer";
+  wrap.innerHTML=`<div class="drawer-panel">
+    <div class="drawer-head">
+      <div class="dh-left"><span class="dh-tk">${it.ticker}</span>
+        <span class="chip" style="color:${d.color};background:${d.soft}">${ic(d.icon,12)} ${d.label}</span>
+        <span class="dh-nm">${it.name}</span></div>
+      <button class="dh-close" aria-label="Chiudi">${ic("x",18)}</button>
+    </div>
+    ${it.dir!=="WATCH" ? `<div class="dh-levels">
+      <span><i style="background:#6FB2FF"></i>Ingresso <b>${it.entry}</b></span>
+      <span><i style="background:#FF6B6B"></i>Stop <b>${it.stop}</b></span>
+      <span><i style="background:#2FD6A0"></i>Obiettivo <b>${it.target}</b></span></div>` : ``}
+    <div class="tvbox"><div class="tv-fallback">Carico il grafico…<a href="${link}" target="_blank" rel="noreferrer">Apri ${it.ticker} su TradingView ${ic("ext",13)}</a></div></div>
+    <p class="tv-hint">Livelli indicativi — traccia e conferma sul grafico prima di operare.</p>
+  </div>`;
+  document.body.appendChild(wrap);
+  const close=()=>{ wrap.remove(); document.removeEventListener("keydown",esc); };
+  const esc=(e)=>{ if(e.key==="Escape") close(); };
+  document.addEventListener("keydown",esc);
+  wrap.addEventListener("click",(e)=>{ if(e.target===wrap) close(); });
+  wrap.querySelector(".dh-close").onclick=close;
+  const box=wrap.querySelector(".tvbox");
+  loadTV().then(()=>{ if(!window.TradingView){ return; }
+    box.innerHTML=`<div id="tvw" style="height:100%"></div>`;
+    new window.TradingView.widget({ container_id:"tvw", symbol:it.tvSymbol, interval:"D", timezone:"Europe/Rome",
+      theme:"dark", style:"1", locale:"it", autosize:true, hide_side_toolbar:false, allow_symbol_change:false,
+      studies:["MASimple@tv-basicstudies"], backgroundColor:"#0E141B" });
+  }).catch(()=>{});
+}
+
+/* ————— render ————— */
+function freshness(iso){
+  const now=new Date();
+  if(!iso) return { level:"stale", icon:"\u26A0", text:"Aggiornamento sconosciuto — verifica l'automazione." };
+  const gen=new Date(iso);
+  const mrb=new Date(now); const wd=mrb.getDay();
+  if(wd===0) mrb.setDate(mrb.getDate()-2); else if(wd===6) mrb.setDate(mrb.getDate()-1);
+  mrb.setHours(0,0,0,0);
+  const hh=gen.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit"});
+  const dm=gen.toLocaleDateString("it-IT",{day:"2-digit",month:"2-digit"});
+  if(gen.toDateString()===now.toDateString()) return { level:"fresh", icon:"\u25CF", text:"Aggiornato oggi alle "+hh };
+  if(gen>=mrb) return { level:"ok", icon:"\u25CF", text:"Ultima seduta: "+dm+" "+hh };
+  return { level:"stale", icon:"\u26A0", text:"DATI NON AGGIORNATI — ultimo: "+dm+" "+hh+". Non operare finch\u00e9 non si aggiorna." };
+}
+const STATE={ filter:"TUTTI", data:FALLBACK };
+const app=document.getElementById("app");
+
+function build(){
+  const d=STATE.data, r=REGIME[d.regime.level];
+  const fr=freshness(d.generatedAt);
+  const c={ long:d.items.filter(x=>x.dir==="LONG").length, short:d.items.filter(x=>x.dir==="SHORT").length, watch:d.items.filter(x=>x.dir==="WATCH").length };
+  const tabs=["TUTTI","LONG","SHORT","WATCH"];
+  app.innerHTML=`
+    <header class="top">
+      <div><div class="title">BRIEF SWING</div><div class="sub">${d.date} · <span class="mono">${d.dataDate}</span></div></div>
+      <div class="lamps" title="Semaforo macro">
+        ${["verde","giallo","rosso"].map(lv=>`<span class="lamp ${d.regime.level===lv?"on":""}" style="--c:${REGIME[lv].color}"></span>`).join('')}
+      </div>
+    </header>
+    <div class="freshbar ${fr.level}">${fr.icon} ${fr.text}</div>
+    <section class="regime" style="--rc:${r.color}">
+      <div class="regime-head"><span class="regime-dot"></span><span class="regime-label">Regime macro — ${d.regime.label}</span></div>
+      <p class="regime-detail">${d.regime.detail}</p>
+    </section>
+    <div class="stats">
+      <div class="stat"><b style="color:${DIR.LONG.color}">${c.long}</b><span>long</span></div>
+      <div class="stat"><b style="color:${DIR.SHORT.color}">${c.short}</b><span>short</span></div>
+      <div class="stat"><b style="color:${DIR.WATCH.color}">${c.watch}</b><span>osservati</span></div>
+      <div class="tabs">${tabs.map(t=>`<button class="tab ${STATE.filter===t?"act":""}" data-f="${t}">${t==="WATCH"?"OSSERVA":t}</button>`).join('')}</div>
+    </div>
+    <main class="grid" id="grid"></main>
+    <footer class="foot">Analisi, non consulenza finanziaria · dati ritardati e indicativi · confermare sempre sul grafico prima di operare.</footer>`;
+  app.querySelectorAll(".tab").forEach(b=> b.onclick=()=>{ STATE.filter=b.dataset.f;
+    app.querySelectorAll(".tab").forEach(x=>x.classList.toggle("act", x===b)); renderGrid(); });
+  renderGrid();
+}
+function renderGrid(){
+  const grid=document.getElementById("grid");
+  const items=STATE.data.items.filter(x=> STATE.filter==="TUTTI"||x.dir===STATE.filter);
+  grid.innerHTML=items.map((it,i)=>cardHTML(it,i)).join('');
+  grid.querySelectorAll("[data-chart]").forEach(btn=> btn.onclick=()=>{
+    const it=STATE.data.items.find(x=>x.ticker===btn.dataset.chart); if(it) openChart(it); });
+}
+
+/* legge brief.json; se manca usa i dati di riserva */
+fetch("./brief.json",{cache:"no-store"})
+  .then(r=>{ if(!r.ok) throw 0; return r.json(); })
+  .then(j=>{ STATE.data=j; build(); })
+  .catch(()=>{ build(); });
+</script>
+</body>
+</html>
