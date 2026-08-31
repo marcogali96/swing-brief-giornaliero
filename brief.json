@@ -1,36 +1,278 @@
 {
-  "date": "27 agosto 2026",
-  "dataDate": "TEST SCRITTURA OK",
-  "generatedAt": "2026-08-27T07:05:00Z",
+  "date": "31 agosto 2026",
+  "dataDate": "dati al 28/08",
+  "generatedAt": "2026-08-31T17:27:33Z",
   "regime": {
-    "level": "verde",
-    "label": "Verde attenuato",
-    "detail": "Breadth risk-on: large cap USA in maggioranza sopra le medie, nessun liquido su nuovi minimi a 200gg. Pullback in alcuni leader → cautela. Per gli short il regime resta sfavorevole."
+    "level": "giallo",
+    "label": "Risk-on ma con evento chiave in settimana",
+    "detail": "Indici in uptrend sopra le medie a 50/200 (S&P 500 7677, Nasdaq 100 29335, DAX 26258, STOXX 600 651) e VIX calmo a ~15. Tuttavia venerdì 4/9 escono le buste paga USA (NFP) e mercoledì la CPI flash Eurozona: eventi potenzialmente dirompenti. Size ridotta; privilegiare i long, pochi short selettivi."
   },
   "items": [
     {
-      "ticker": "MSFT", "tvSymbol": "NASDAQ:MSFT", "name": "Microsoft", "sector": "Software", "country": "USA",
-      "dir": "LONG", "score": 8.0, "breakdown": { "T": 8.5, "F": 8.0, "M": 7.0, "RS": 8.0 },
-      "price": "$496", "entry": "486 – 492", "stop": "470", "target": "540", "rr": "1 : 2,5",
-      "flags": [], "note": "Uptrend pulito sopra le medie, utili +31,7% a/a, momentum in accelerazione."
+      "ticker": "V",
+      "tvSymbol": "NYSE:V",
+      "name": "Visa Inc. Class A",
+      "sector": "Financial Services",
+      "country": "USA",
+      "dir": "LONG",
+      "score": 7.7,
+      "breakdown": {
+        "T": 8.0,
+        "F": 7.5,
+        "M": 7.0,
+        "RS": 8.0
+      },
+      "price": "381.60",
+      "entry": "376 – 382",
+      "stop": "366",
+      "target": "402",
+      "rr": "1 : 1.8",
+      "flags": [],
+      "note": "Uptrend pulito su nuovi massimi, sopra SMA50 (358) e SMA200 (332); leader con forza relativa +17% vs S&P 500."
     },
     {
-      "ticker": "LLY", "tvSymbol": "NYSE:LLY", "name": "Eli Lilly", "sector": "Pharma", "country": "USA",
-      "dir": "LONG", "score": 7.0, "breakdown": { "T": 6.5, "F": 8.5, "M": 6.5, "RS": 5.5 },
-      "price": "$1.189", "entry": "1.180 – 1.190", "stop": "1.120", "target": "1.290", "rr": "1 : 1,6",
-      "flags": ["Attendere tenuta MA50"], "note": "Pullback su supporto in trend sano, ricavi +47,7% a/a. Entrare solo se la MA50 regge."
+      "ticker": "MSFT",
+      "tvSymbol": "NASDAQ:MSFT",
+      "name": "Microsoft Corporation",
+      "sector": "Technology",
+      "country": "USA",
+      "dir": "LONG",
+      "score": 7.6,
+      "breakdown": {
+        "T": 7.0,
+        "F": 8.5,
+        "M": 7.5,
+        "RS": 7.5
+      },
+      "price": "513.53",
+      "entry": "495 – 505",
+      "stop": "478",
+      "target": "540",
+      "rr": "1 : 1.8",
+      "flags": [],
+      "note": "Breakout potente post-trimestrale, ma esteso (+19% sopra SMA50): entrare solo su pullback verso 495-505. Fondamentali AI/cloud eccellenti."
     },
     {
-      "ticker": "WMT", "tvSymbol": "NYSE:WMT", "name": "Walmart", "sector": "Retail", "country": "USA",
-      "dir": "SHORT", "score": 7.5, "breakdown": { "T": 8.0, "F": 7.5, "M": 6.0, "RS": 8.5 },
-      "price": "$104", "entry": "108 – 110", "stop": "114", "target": "96", "rr": "1 : 2,0",
-      "flags": ["Post-utili"], "note": "Rottura sotto tutte le medie, crescita lenta e P/E tirato. Beta basso: si muove piano."
+      "ticker": "JPM",
+      "tvSymbol": "NYSE:JPM",
+      "name": "JPMorgan Chase & Co",
+      "sector": "Financial Services",
+      "country": "USA",
+      "dir": "LONG",
+      "score": 7.55,
+      "breakdown": {
+        "T": 7.5,
+        "F": 7.5,
+        "M": 7.0,
+        "RS": 8.5
+      },
+      "price": "357.62",
+      "entry": "353 – 358",
+      "stop": "346",
+      "target": "375",
+      "rr": "1 : 2.1",
+      "flags": [],
+      "note": "Pullback ordinato dai massimi (371) che tiene sopra SMA50 (347); banche favorite dal regime risk-on. Forza relativa +19% vs S&P 500."
     },
     {
-      "ticker": "META", "tvSymbol": "NASDAQ:META", "name": "Meta Platforms", "sector": "Comm. Services", "country": "USA",
-      "dir": "WATCH", "score": 5.0, "breakdown": { "T": 3.5, "F": 6.0, "M": 6.0, "RS": 5.0 },
-      "price": "$576", "entry": "—", "stop": "—", "target": "—", "rr": "—",
-      "flags": ["Sotto MA200"], "note": "Rimbalzo del +5,5% ma ancora sotto MA50 e MA200. Diventa long solo oltre i $623."
+      "ticker": "RACE",
+      "tvSymbol": "NYSE:RACE",
+      "name": "Ferrari NV",
+      "sector": "Consumer Cyclical (Lusso)",
+      "country": "Italia (quotazione primaria NYSE)",
+      "dir": "LONG",
+      "score": 7.4,
+      "breakdown": {
+        "T": 7.5,
+        "F": 7.5,
+        "M": 6.5,
+        "RS": 8.0
+      },
+      "price": "420.54",
+      "entry": "412 – 421",
+      "stop": "402",
+      "target": "445",
+      "rr": "1 : 2.0",
+      "flags": [],
+      "note": "Uptrend solido, breve pullback dai massimi (437) sopra SMA50 (390). Forza relativa +15% vs STOXX 600; margini premium, valutazione ricca."
+    },
+    {
+      "ticker": "TSLA",
+      "tvSymbol": "NASDAQ:TSLA",
+      "name": "Tesla Inc",
+      "sector": "Consumer Cyclical (Auto)",
+      "country": "USA",
+      "dir": "SHORT",
+      "score": 7.3,
+      "breakdown": {
+        "T": 7.5,
+        "F": 7.5,
+        "M": 6.0,
+        "RS": 8.0
+      },
+      "price": "348.75",
+      "entry": "350 – 358",
+      "stop": "368",
+      "target": "318",
+      "rr": "1 : 2.6",
+      "flags": [],
+      "note": "Sotto SMA50 (360) e SMA200 (401); rimbalzo respinto in area SMA50 = trigger ribassista. Laggard -18% vs S&P 500, valutazione estrema. Attenzione al tape risk-on."
+    },
+    {
+      "ticker": "SAP",
+      "tvSymbol": "XETR:SAP",
+      "name": "SAP SE",
+      "sector": "Technology",
+      "country": "Germania",
+      "dir": "WATCH",
+      "score": 6.9,
+      "breakdown": {
+        "T": 6.0,
+        "F": 7.5,
+        "M": 7.0,
+        "RS": 7.5
+      },
+      "price": "191.32",
+      "entry": "—",
+      "stop": "—",
+      "target": "—",
+      "rr": "—",
+      "flags": [],
+      "note": "Forza relativa positiva vs STOXX 600 ma prezzo molto esteso sopra SMA50 (157) con SMA50<SMA200: attendere pullback prima di valutare long."
+    },
+    {
+      "ticker": "NKE",
+      "tvSymbol": "NYSE:NKE",
+      "name": "Nike Inc",
+      "sector": "Consumer Cyclical",
+      "country": "USA",
+      "dir": "WATCH",
+      "score": 6.9,
+      "breakdown": {
+        "T": 7.5,
+        "F": 6.5,
+        "M": 6.0,
+        "RS": 7.5
+      },
+      "price": "39.60",
+      "entry": "—",
+      "stop": "—",
+      "target": "—",
+      "rr": "—",
+      "flags": [],
+      "note": "Short in costruzione: sotto SMA50 (42) e SMA200 (52), nuovi minimi recenti, laggard -15%. Penalizzato dal regime risk-on; short valido su rimbalzo verso 41-42."
+    },
+    {
+      "ticker": "WFC",
+      "tvSymbol": "NYSE:WFC",
+      "name": "Wells Fargo & Company",
+      "sector": "Financial Services",
+      "country": "USA",
+      "dir": "WATCH",
+      "score": 6.7,
+      "breakdown": {
+        "T": 6.0,
+        "F": 7.0,
+        "M": 7.0,
+        "RS": 7.0
+      },
+      "price": "86.69",
+      "entry": "—",
+      "stop": "—",
+      "target": "—",
+      "rr": "—",
+      "flags": [],
+      "note": "Sopra le medie (SMA50 86, SMA200 84) ma azione laterale e compressa: attendere rottura sopra 89 per confermare la ripresa del trend."
+    },
+    {
+      "ticker": "NVDA",
+      "tvSymbol": "NASDAQ:NVDA",
+      "name": "NVIDIA Corporation",
+      "sector": "Technology",
+      "country": "USA",
+      "dir": "WATCH",
+      "score": 6.9,
+      "breakdown": {
+        "T": 6.0,
+        "F": 8.5,
+        "M": 7.5,
+        "RS": 5.0
+      },
+      "price": "217.55",
+      "entry": "—",
+      "stop": "—",
+      "target": "—",
+      "rr": "—",
+      "flags": [],
+      "note": "Sopra SMA200 (196) ma in consolidamento, forza relativa piatta (-3% a 3 mesi). Long solo su rottura sopra 224-228."
+    },
+    {
+      "ticker": "AMZN",
+      "tvSymbol": "NASDAQ:AMZN",
+      "name": "Amazon.com Inc",
+      "sector": "Consumer Cyclical",
+      "country": "USA",
+      "dir": "WATCH",
+      "score": 6.8,
+      "breakdown": {
+        "T": 6.0,
+        "F": 8.0,
+        "M": 7.5,
+        "RS": 5.5
+      },
+      "price": "266.43",
+      "entry": "—",
+      "stop": "—",
+      "target": "—",
+      "rr": "—",
+      "flags": [],
+      "note": "Sopra SMA200 (239) ma momentum a 3 mesi fermo (RS in linea col mercato); rientro sopra 268 riattiverebbe il long."
+    },
+    {
+      "ticker": "GOOGL",
+      "tvSymbol": "NASDAQ:GOOGL",
+      "name": "Alphabet Inc Class A",
+      "sector": "Communication Services",
+      "country": "USA",
+      "dir": "WATCH",
+      "score": 6.4,
+      "breakdown": {
+        "T": 5.5,
+        "F": 8.0,
+        "M": 7.0,
+        "RS": 4.5
+      },
+      "price": "346.59",
+      "entry": "—",
+      "stop": "—",
+      "target": "—",
+      "rr": "—",
+      "flags": [],
+      "note": "Poco sopra SMA200 (334) ma forza relativa negativa a 3 mesi (-8% vs S&P 500): serve riconquistare 370 per tornare leader."
+    },
+    {
+      "ticker": "ORCL",
+      "tvSymbol": "NYSE:ORCL",
+      "name": "Oracle Corporation",
+      "sector": "Technology",
+      "country": "USA",
+      "dir": "WATCH",
+      "score": 6.0,
+      "breakdown": {
+        "T": 5.5,
+        "F": 6.5,
+        "M": 6.0,
+        "RS": 6.0
+      },
+      "price": "150.85",
+      "entry": "—",
+      "stop": "—",
+      "target": "—",
+      "rr": "—",
+      "flags": [
+        "⚠️ utili l'8/09 (entro 10 giorni)"
+      ],
+      "note": "Sotto SMA200 (170) ma in rimbalzo: quadro short non pulito. Trimestrale l'8/09 — rischio elevato in entrambe le direzioni, restare a guardare."
     }
   ]
 }
